@@ -1,0 +1,575 @@
+ <!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Le point virgule de trop</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!------------------------------------------------------>
+				<section>
+					<h1>Le point virgule de trop</h1>
+					<h3>
+						Benoit VIGUIER
+					</h3>
+					<p><small>AFUP Lyon 28/04/2002</small></p>
+					<aside class="notes">
+						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+					</aside>
+				</section>
+
+
+				<!------------------------------------------------------>
+				<section data-markdown><script type="text/template">
+					## Connaissez-vous les *array tips*©?
+
+					```php [1-7|9-17|19-30]
+					$data = [
+						['people' => 😀, 'fruit' => 🍎, 'animal' => 🐶],
+						['people' => 😎, 'fruit' => 🍐, 'animal' => 🐭],
+						['people' => 🥶, 'fruit' => 🍊, 'animal' => 🐰],
+						['people' => 🤡, 'fruit' => 🍋, 'animal' => 🦊],
+						['people' => 🤠, 'fruit' => 🍊, 'animal' => 🐯],
+					];
+
+					array_values(
+						array_intersect_key(
+							$data,
+							array_intersect(
+								array_column($data, 'fruit'),
+								[🍊, 🍎]
+							)
+						)
+					);
+
+					// Result
+					[
+						['people' => 😀, 'fruit' => 🍎, 'animal' => 🐶],
+						['people' => 🥶, 'fruit' => 🍊, 'animal' => 🐰],
+						['people' => 🤠, 'fruit' => 🍊, 'animal' => 🐯],
+					];
+					```
+
+					[github.com/b-viguier/php-emoji](https://github.com/b-viguier/php-emoji)
+
+					---
+					## Pourquoi c'est bien?
+					* 🧐 Élégant  <!-- .element: class="fragment" -->
+					* 🧩 Composable <!-- .element: class="fragment" -->
+					* 😂 Drôle (si si) <!-- .element: class="fragment" -->
+
+					---
+					## Pourquoi c'est mal?
+					* 😨 Dur à maintenir <!-- .element: class="fragment" -->
+					* 😱 Pas toujours lisible <!-- .element: class="fragment" -->
+					* 😢 PHP n'est pas (vraiment) fait pour ça <!-- .element: class="fragment" -->
+
+					---
+					## Ceci étant dit...
+					### ... est ce qu'on peut aller plus loin ? <!-- .element: class="fragment" -->
+					#### ... pour la science... <!-- .element: class="fragment" -->
+
+
+					---
+					## Peut-on écrire tout un programme en une seule instruction ?
+
+					---
+					### Pourquoi le `;` est important?
+					```php [1,4,7,10|2,5,8,11|1-30]
+					$a  ($b);
+					$a; ($b);
+
+					$a  -$b;
+					$a; -$b;
+
+					if(false)  echo "Hello";
+					if(false); echo "Hello";
+
+					yield  $a=1;
+					yield; $a=1;
+					```
+
+					---
+					### Échauffement
+					```php
+					$a = 3;
+					$b = 17;
+					$c = $a * $b;
+					```
+
+					---
+					## Il y a quand même des règles!
+					## ⚠️
+
+					---
+					## `exec`
+					Pas assez PHP...
+					```php
+					passthru("python -c \"a=3\nb=17\nc=a*b\"");
+					```
+
+					---
+					## `eval`
+					Trop PHP...
+					```php
+					eval('
+						$a = 3;
+						$b = 17;
+						$c = $a * $b;
+					');
+					```
+
+					---
+					## `?>`
+					Trop facile...
+					```php
+					<?php $a = 3 ?>
+					<?php $b = 17 ?>
+					<?php $c = $a * $b ?>
+					```
+
+ 					---
+					## Quelques solutions *élégantes* 🧐
+
+					---
+					## Expression booléenne
+					```php
+					($a = 3) && ($b = 17) && ($c = $a * $b);
+					```
+
+					---
+					## Tableau
+					```php
+					[
+						$a = 3,
+						$b = 17,
+						$c = $a * $b,
+					];
+					```
+
+					---
+					## Tableau à 1 élément
+					```php
+					[
+						0 => $a = 3,
+						0 => $b = 17,
+						0 => $c = $a * $b,
+					];
+					```
+
+					---
+					## Structure de contrôle
+					```php
+					if($a = 3) {}
+					while(($b = 17) && false) {}
+					switch($c = $a * $b) {}
+					```
+
+					---
+					EXPRESSIONS ! <!-- .element: class="r-fit-text" -->
+
+				</script></section>
+
+				<section>
+					<section data-markdown><script type="text/template">
+					## Question pour une EXPRESSION
+
+					---
+					```php
+					false
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					(int)
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					(int) 0
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					(void) 0
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					$a = "Hello World"
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					const A = "Hello World"
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					define('A', "Hello World")
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					echo("Hello World")
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					print("Hello World")
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					function ()
+					{
+						print("Hello World");
+					}
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					function foo(): void
+					{
+						print("Hello World");
+					}
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					$obj instanceof \stdClass
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					require "vendor/autoload.php"
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					namespace Acme
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					match(true) {
+						default => 0
+					}
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					continue 2
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					goto my_label
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					yield
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					return
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					exit
+					```
+					👍 Oui <!-- .element: class="fragment" -->
+
+					---
+					```php
+					$a[]
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					throw new \Exception()
+					```
+					👎 Non <!-- .element: class="fragment" -->
+
+					👍 Oui (Php >= 8.0) <!-- .element: class="fragment" -->
+
+
+					</script></section>
+
+				</section>
+
+				<section data-markdown><script type="text/template">
+					## Passez moi l'*expression*…
+
+					---
+					## Un exemple !!
+					*Guess my Number*
+
+					---
+					```php [|1-5|7|8-10|11-21|24-30|]
+					echo "Guess my number, between 1 and 100 (5 attempts)\n";
+
+					const MAX_ATTEMPT = 5;
+					$number = rand(1, 100);
+					$attempt = 1;
+
+					for($attempt=1; $attempt<=MAX_ATTEMPT; ++$attempt) {
+						echo "[attempt $attempt] ?: ";
+						$guess = fgets(STDIN);
+						$guess = (int) trim($guess);
+
+						switch($guess <=> $number) {
+							case 0:
+								echo "Victory!\n";
+								exit(0);
+							case -1:
+								echo "Too low...\n";
+								break;
+							case 1:
+								echo "Too high...\n";
+								break;
+						}
+					}
+
+					echo "Game over :(\n";
+					exit(1);
+
+					```
+
+					---
+					## 17 point-virgules !
+					🙈🙉🙊
+
+				</script></section>
+
+				<section data-auto-animate>
+					<pre data-id="pg1"><code class="php" data-trim data-line-numbers>
+					echo "Guess my number, between 1 and 100 (5 attempts)\n";
+
+					const MAX_ATTEMPT = 5;
+					$number = rand(1, 100);
+					$attempt = 1;
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<pre data-id="pg1"><code class="php" data-trim data-line-numbers>
+					[
+					    print("Guess my number, between 1 and 100 (5 attempts)\n"),
+					    define('MAX_ATTEMPT', 5),
+					    $number = rand(1, 100),
+					    $attempt = 1,
+					];
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<pre data-id="pg1"><code class="php" data-trim data-line-numbers>
+					if([
+					    print("Guess my number, between 1 and 100 (5 attempts)\n"),
+					    define('MAX_ATTEMPT', 5),
+					    $number = rand(1, 100),
+					    $attempt = 1,
+					]) {}
+					</code></pre>
+				</section>
+
+				<section data-auto-animate>
+					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
+					for($attempt=1; $attempt<=MAX_ATTEMPT; ++$attempt) {
+					    //
+					}
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
+					foreach(range(1, MAX_ATTEMPT) as $attempt) {
+					    //
+					}
+					</code></pre>
+				</section>
+
+				<section data-auto-animate>
+					<pre data-id="pg3"><code class="php" data-trim data-line-numbers>
+					switch($guess <=> $number) {
+						case 0:
+							echo "Victory!\n";
+							exit(0);
+						case -1:
+							echo "Too low...\n";
+							break;
+						case 1:
+							echo "Too high...\n";
+							break;
+					}
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<pre data-id="pg3"><code class="php" data-trim data-line-numbers>
+					match($guess <=> $number) {
+						0 => [
+							print("Victory!\n"),
+							exit(0),
+						],
+						-1 => print("Too low...\n"),
+						1 => print("Too high...\n"),
+					};
+					</code></pre>
+				</section>
+
+				<section data-markdown><script type="text/template">
+					```php [|1-6|8-23|25]
+					if([
+						print("Guess my number, between 1 and 100 (5 attempts)\n"),
+						define('MAX_ATTEMPT', 1),
+						$number = rand(1, 100),
+						$attempt = 1,
+					]) {}
+
+					foreach(range(1, MAX_ATTEMPT) as $attempt) {
+						if([
+							print("[attempt $attempt] ?: "),
+							$guess = fgets(STDIN),
+							$guess = (int) trim($guess),
+
+							match($guess <=> $number) {
+								0 => [
+									print("Victory!\n"),
+									exit(0),
+								],
+								-1 => print("Too low...\n"),
+								1 => print("Too high...\n"),
+							},
+						]) {}
+					}
+
+					exit([0 => print("Game over :(\n"), 0 => 1][0]);
+					```
+
+
+					---
+					## *I believe I can fly*
+					Mais c'était un cas facile... <!-- .element: class="fragment" -->
+
+					---
+					## Fonctions
+					_Un truc pour les humains_
+
+					---
+					## Fonctions
+					Exemples
+
+					---
+					## Fonctions
+					Comment retourner une valeur ?
+
+					---
+					## Arrow Fonctions
+					**TOUT** écrire sous forme d'expression
+
+					---
+					## Arrow Fonctions
+					:warning: Ordre de définition!
+
+					---
+					Exemple
+
+					---
+					## Générateur / Fiber
+					Un _pseudo_ `return`
+
+					---
+					## Variable globale
+					À l'ancienne...
+
+					---
+					## Les _interruptions_ du flux d'execution
+					Goto, return...
+
+					---
+					## Les boucles
+					Expression recursive
+
+					---
+					## Exemple
+
+
+					---
+					## Les Classes
+					le private n'existe pas (comme le const)
+					Propre dynamique php 8.2
+
+					---
+					Meta-programmation FFI
+
+					---
+					Pourrait-on le faire en automatique?
+					PhpParser
+
+
+				</script></section>
+
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src=" plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				width: "100%", //1600,
+				height: "100%", //900,
+
+				// Bounds for smallest/largest possible scale to apply to content
+				minScale: 0.5,
+				maxScale: 2.0,
+
+				hash: true,
+				controls: false,
+				pause: false,
+				progress: false,
+				beforeHighlight: hljs => hljs.registerLanguage("php"),
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
