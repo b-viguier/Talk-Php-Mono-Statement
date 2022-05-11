@@ -20,13 +20,15 @@
 				<!------------------------------------------------------>
 				<section>
 					<h1>Le point virgule de trop</h1>
-					<h3>
+
+					<h2>
 						Benoit VIGUIER
+					</h2>
+					<h3>
+						<a href="https://twitter.com/b_viguier"><code>@b_viguier</code></a>
 					</h3>
-					<p><small>AFUP Lyon 28/04/2002</small></p>
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
+					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 19/05/2022</a></small></p>
+
 				</section>
 
 
@@ -34,7 +36,7 @@
 				<section data-markdown><script type="text/template">
 					## Connaissez-vous les *array tips*©?
 
-					```php [1-7|9-17|19-30]
+					```php [1-7|9-17|19-30|]
 					$data = [
 						['people' => 😀, 'fruit' => 🍎, 'animal' => 🐶],
 						['people' => 😎, 'fruit' => 🍐, 'animal' => 🐭],
@@ -86,7 +88,7 @@
 
 					---
 					### Pourquoi le `;` est important?
-					```php [1,4,7,10|2,5,8,11|1-30]
+					```php [|1,4,7,10|2,5,8,11|]
 					$a  ($b);
 					$a; ($b);
 
@@ -419,6 +421,17 @@
 					    //
 					}
 					</code></pre>
+				</section><section data-auto-animate>
+					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
+					($recursion = function ($attempt = 1) use (&$recursion) {
+						if (
+							$attempt <= MAX_ATTEMPT
+							&& [ /** your code **/ ]
+							&& $recursion($attempt + 1)
+						) {
+						}
+					})();
+					</code></pre>
 				</section>
 
 				<section data-auto-animate>
@@ -450,7 +463,7 @@
 				</section>
 
 				<section data-markdown><script type="text/template">
-					```php [|1-6|8-23|25]
+					```php [|1-6|8-23|25-100|]
 					if([
 						print("Guess my number, between 1 and 100 (5 attempts)\n"),
 						define('MAX_ATTEMPT', 1),
@@ -475,72 +488,127 @@
 						]) {}
 					}
 
-					exit([0 => print("Game over :(\n"), 0 => 1][0]);
+					exit([
+						0 => print("Game over :(\n"),
+						0 => 1
+					 ][0]);
+					```
+				</script></section>
+
+				<section data-background-image="./img/Hide-the-Pain.jpg" > </section>
+
+				<section data-markdown><script type="text/template">
+					## Les fonctions
+					_Un truc pour les humains_
+
+					---
+					## Exemple
+					```
+					print add(2, 3);
+
+					function add(int $a, int $b): int
+					{
+						return $a + $b;
+					}
+					```
+
+					---
+					## _Arrow Function_
+					```
+					[
+						$add = fn(int $a, int $b): int => $a + $b,
+						print $add(2, 3),
+					];
+					```
+
+					---
+					## ⚠️ Attention ⚠️
+					* Ordre de définition
+					* Pas d'auto-loading
+					* 1 expression
+					* Scope de la closure
+					* Pas de récursivité
+
+
+					---
+					## Générateur / Fiber
+					```
+					function add(int $a, int $b): \Generator
+					{
+						if(yield $a+$b) {}
+					}
+
+					print add(2, 3)->current();
+					```
+
+					---
+					## Variable globale
+					```
+					function add(int $a, int $b): void
+					{
+						if($GLOBALS['__return'] = $a + $b) {}
+					}
+
+					print add(1, 2) ?: $GLOBALS['__return'];
 					```
 
 
 					---
-					## *I believe I can fly*
-					Mais c'était un cas facile... <!-- .element: class="fragment" -->
+					## Référence
+					```
+					function add(int $a, int $b, int &$return): void
+					{
+						if($return = $a + $b) {}
+					}
+
+					print ![$return = 0, add(1, 2, $return)] ?: $return;
+					```
 
 					---
-					## Fonctions
-					_Un truc pour les humains_
+					## Exceptions 🙈 🙉 🙊
+					```
+					function add(int $a, int $b): void
+					{
+						if (throw new \Exception(code: $a + $b)) {}
+					}
+
+					try {
+						if (add(1, 2)) {}
+					} catch (\Exception $exception) {
+						print $exception->getCode();
+					}
+					```
 
 					---
-					## Fonctions
-					Exemples
-
-					---
-					## Fonctions
-					Comment retourner une valeur ?
-
-					---
-					## Arrow Fonctions
-					**TOUT** écrire sous forme d'expression
-
-					---
-					## Arrow Fonctions
-					:warning: Ordre de définition!
-
-					---
-					Exemple
-
-					---
-					## Générateur / Fiber
-					Un _pseudo_ `return`
-
-					---
-					## Variable globale
-					À l'ancienne...
-
-					---
-					## Les _interruptions_ du flux d'execution
-					Goto, return...
-
-					---
-					## Les boucles
-					Expression recursive
-
-					---
-					## Exemple
+					## LA difficulté
+					* `goto`
+					* `return`
+					* `break`, `continue`
+					* …
 
 
 					---
-					## Les Classes
-					le private n'existe pas (comme le const)
-					Propre dynamique php 8.2
-
-					---
-					Meta-programmation FFI
-
-					---
-					Pourrait-on le faire en automatique?
-					PhpParser
+					## Pour aller plus loin
+					* Programmation fonctionnelle
+					* [Array Tips](https://github.com/b-viguier/php-emoji)
+					* [Php-Parser](https://github.com/nikic/PHP-Parser)
+					* [Partagez](https://twitter.com/b_viguier) vos _tips_ ! 😀
 
 
 				</script></section>
 
+				<section>
+					<h1>Merci 🙇</h1>
+
+					<h2>
+						Benoit VIGUIER
+					</h2>
+					<h3>
+						<a href="https://twitter.com/b_viguier"><code>@b_viguier</code></a>
+					</h3>
+					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 19/05/2022</a></small></p>
+
+				</section>
 
 			</div>
 		</div>
