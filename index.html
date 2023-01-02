@@ -27,10 +27,18 @@
 					<h3>
 						<a href="https://twitter.com/b_viguier"><code>@b_viguier</code></a>
 					</h3>
-					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 19/05/2022</a></small></p>
+					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 17/01/2023</a></small></p>
 
 				</section>
 
+				<!------------------------------------------------------>
+				<section>
+					<h1>Disclaimer</h1>
+					<img height="800px" src="img/explicit-php.png">
+				</section>
+
+				<!------------------------------------------------------>
+				<section data-background-image="./img/power.png" > </section>
 
 				<!------------------------------------------------------>
 				<section data-markdown><script type="text/template">
@@ -88,7 +96,7 @@
 
 					---
 					### Pourquoi le `;` est important?
-					```php [|1,4,7,10|2,5,8,11|]
+					```php [|1,4,7,10,13|2,5,8,11,14|]
 					$a  ($b);
 					$a; ($b);
 
@@ -97,6 +105,9 @@
 
 					if(false)  echo "Hello";
 					if(false); echo "Hello";
+
+					foo()  [$b]=[$c];
+					foo(); [$b]=[$c];
 
 					yield  $a=1;
 					yield; $a=1;
@@ -141,7 +152,15 @@
 					<?php $c = $a * $b ?>
 					```
 
- 					---
+					---
+					### Échauffement
+					```php
+					$a = 3;
+					$b = 17;
+					$c = $a * $b;
+					```
+
+					---
 					## Quelques solutions *élégantes* 🧐
 
 					---
@@ -593,9 +612,12 @@
 					* [Array Tips](https://github.com/b-viguier/php-emoji)
 					* [Php-Parser](https://github.com/nikic/PHP-Parser)
 					* [Partagez](https://twitter.com/b_viguier) vos _tips_ ! 😀
+					* [PhpF*ck](https://b-viguier.github.io/PhpFk/)
 
 
 				</script></section>
+
+				<section data-background-image="./img/phpfck.png" > </section>
 
 				<section data-background-image="./img/power.png" > </section>
 
@@ -608,7 +630,7 @@
 					<h3>
 						<a href="https://twitter.com/b_viguier"><code>@b_viguier</code></a>
 					</h3>
-					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 19/05/2022</a></small></p>
+					<p><small><a href="https://www.meetup.com/afup-lyon-php/events/285650249/">AFUP Lyon 17/01/2023</a></small></p>
 
 				</section>
 
