@@ -256,7 +256,7 @@
 
 					---
 					```php
-					print("Hello World")
+					print "Hello World"
 					```
 					👍 Oui <!-- .element: class="fragment" -->
 
@@ -277,6 +277,17 @@
 					}
 					```
 					👎 Non <!-- .element: class="fragment" -->
+
+					---
+					```php
+					// function foo(): void
+					// {
+					// 	print("Hello World");
+					// }
+
+					foo() && foo()
+					```
+					👍 Oui <!-- .element: class="fragment" -->
 
 					---
 					```php
@@ -430,14 +441,25 @@
 				<section data-auto-animate>
 					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
 					for($attempt=1; $attempt<=MAX_ATTEMPT; ++$attempt) {
-					    //
+					    /** your code **/
 					}
 					</code></pre>
 				</section>
 				<section data-auto-animate>
 					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
 					foreach(range(1, MAX_ATTEMPT) as $attempt) {
-					    //
+					    /** your code **/
+					}
+					</code></pre>
+				</section>
+				<section data-auto-animate>
+					<pre data-id="pg2"><code class="php" data-trim data-line-numbers>
+					if ($attempt = 1) {}
+					while ($attempt <= MAX_ATTEMPT) {
+						if ([
+							/** your code **/,
+							$attempt++,
+						]) {}
 					}
 					</code></pre>
 				</section><section data-auto-animate>
@@ -518,7 +540,7 @@
 
 				<section data-markdown><script type="text/template">
 					## Les fonctions
-					_Un truc pour les humains_
+					_Ça se complique..._
 
 					---
 					## Exemple
@@ -597,8 +619,11 @@
 						print $exception->getCode();
 					}
 					```
+				</script></section>
 
-					---
+				<section data-background-image="./img/regret.png" > </section>
+
+				<section data-markdown><script type="text/template">
 					## LA difficulté
 					* `goto`
 					* `return`
